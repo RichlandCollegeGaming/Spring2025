@@ -1,2 +1,15 @@
 fileFormatVersion: 2
 guid: 339bdfc902cf6c24d88fc8c3d3717cc7
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - Sword: {fileID: 919132149155446097, guid: 8e88c98d2d626cc4ea44d08262751840, type: 3}
+  - SwordAttackSound: {fileID: 8300000, guid: fd7770db49810f24694df32b31dac010, type: 3}
+  - ChargedAttackSound: {fileID: 8300000, guid: a63da493c23148f43bb15c0032e153b0, type: 3}
+  - playerHealth: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
