@@ -4,6 +4,7 @@ using UnityEngine;
 public class WeaponController : MonoBehaviour
 {
     public GameObject Sword;
+    public GameObject HitParticle;
     public bool CanAttack = true;
     public float AttackCooldown = 1.0f;
     public float ChargeAttackCooldown = 2.5f;
@@ -18,11 +19,6 @@ public class WeaponController : MonoBehaviour
     // Damage variables for normal and charged attacks
     public int NormalAttackDamage = 10;
     public int ChargedAttackDamage = 20;
-
-    public bool IsCharging()
-    {
-        return isCharging;
-    }
 
     void Update()
     {
@@ -45,8 +41,7 @@ public class WeaponController : MonoBehaviour
         if (anim != null)
         {
             anim.SetTrigger("Attack");
-            AudioSource ac = GetComponent<AudioSource>();
-            ac.PlayOneShot(SwordAttackSound);
+            GetComponent<AudioSource>().PlayOneShot(SwordAttackSound);
         }
         else
         {
@@ -67,7 +62,7 @@ public class WeaponController : MonoBehaviour
             yield return null;
         }
 
-        if (isCharging) // If still holding after full charge time, perform charge attack
+        if (isCharging)
         {
             PerformChargeAttack();
         }
@@ -82,8 +77,7 @@ public class WeaponController : MonoBehaviour
         if (anim != null)
         {
             anim.SetTrigger("ChargeAttack");
-            AudioSource ac = GetComponent<AudioSource>();
-            ac.PlayOneShot(ChargedAttackSound);
+            GetComponent<AudioSource>().PlayOneShot(ChargedAttackSound);
         }
         else
         {
@@ -98,27 +92,55 @@ public class WeaponController : MonoBehaviour
         if (isCharging)
         {
             isCharging = false;
-            StopCoroutine(ChargeAttack()); // Stops charging if released early
+            StopCoroutine(ChargeAttack());
             SwordAttack();
         }
     }
 
-    // Apply damage to the enemy if it is in the attack range
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Enemy") && IsAttacking)
+        {
+            Debug.Log("Enemy Hit! Spawning Blood Effect.");
+
+            Animator enemyAnim = other.GetComponent<Animator>();
+            if (enemyAnim != null)
+            {
+                enemyAnim.SetTrigger("Hit");
+            }
+
+            int damage = isCharging ? ChargedAttackDamage : NormalAttackDamage;
+            ApplyDamageToEnemy(other, damage);
+
+            Vector3 spawnPosition = other.transform.position + Vector3.up * 1.5f; // Adjust height for visibility
+            GameObject particleInstance = Instantiate(HitParticle, spawnPosition, Quaternion.identity);
+
+            if (particleInstance != null)
+            {
+                ParticleSystem ps = particleInstance.GetComponent<ParticleSystem>();
+                if (ps != null)
+                {
+                    ps.Play(); // Ensure the particle system plays
+                }
+            }
+
+            Destroy(particleInstance, 2.0f); // Extended duration for visibility
+        }
+    }
+
     public void ApplyDamageToEnemy(Collider enemyCollider, int damage)
     {
-        // Find the EnemyAI script on the enemy
         EnemyAI enemyAI = enemyCollider.GetComponent<EnemyAI>();
         if (enemyAI != null)
         {
-            // Call the TakeDamage method on the enemy
             enemyAI.TakeDamage(damage);
         }
     }
 
-    IEnumerator ResetAttackCooldown(float cooldown)
+    private IEnumerator ResetAttackCooldown(float cooldown)
     {
         yield return new WaitForSeconds(cooldown);
         CanAttack = true;
-        IsAttacking = false; // Ensure attack state is properly reset
+        IsAttacking = false;
     }
 }
