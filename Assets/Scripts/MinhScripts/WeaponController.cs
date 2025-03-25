@@ -16,7 +16,7 @@ public class WeaponController : MonoBehaviour
     private float chargeTimer = 0f;
     public PlayerHealth playerHealth;
 
-    // Damage variables for normal and charged attacks
+    // Damage values
     public int NormalAttackDamage = 10;
     public int ChargedAttackDamage = 20;
 
@@ -42,6 +42,7 @@ public class WeaponController : MonoBehaviour
         {
             anim.SetTrigger("Attack");
             GetComponent<AudioSource>().PlayOneShot(SwordAttackSound);
+            Debug.Log("Normal Attack triggered.");
         }
         else
         {
@@ -55,6 +56,7 @@ public class WeaponController : MonoBehaviour
     {
         isCharging = true;
         chargeTimer = 0f;
+        Debug.Log("Charging attack...");
 
         while (chargeTimer < ChargeTime)
         {
@@ -78,6 +80,7 @@ public class WeaponController : MonoBehaviour
         {
             anim.SetTrigger("ChargeAttack");
             GetComponent<AudioSource>().PlayOneShot(ChargedAttackSound);
+            Debug.Log("Charged Attack performed!");
         }
         else
         {
@@ -92,7 +95,7 @@ public class WeaponController : MonoBehaviour
         if (isCharging)
         {
             isCharging = false;
-            StopCoroutine(ChargeAttack());
+            Debug.Log("Charge attack canceled. Performing normal attack.");
             SwordAttack();
         }
     }
@@ -112,7 +115,7 @@ public class WeaponController : MonoBehaviour
             int damage = isCharging ? ChargedAttackDamage : NormalAttackDamage;
             ApplyDamageToEnemy(other, damage);
 
-            Vector3 spawnPosition = other.transform.position + Vector3.up * 1.5f; // Adjust height for visibility
+            Vector3 spawnPosition = other.transform.position + Vector3.up * 1.5f;
             GameObject particleInstance = Instantiate(HitParticle, spawnPosition, Quaternion.identity);
 
             if (particleInstance != null)
@@ -120,11 +123,11 @@ public class WeaponController : MonoBehaviour
                 ParticleSystem ps = particleInstance.GetComponent<ParticleSystem>();
                 if (ps != null)
                 {
-                    ps.Play(); // Ensure the particle system plays
+                    ps.Play();
                 }
             }
 
-            Destroy(particleInstance, 2.0f); // Extended duration for visibility
+            Destroy(particleInstance, 2.0f);
         }
     }
 
@@ -134,6 +137,7 @@ public class WeaponController : MonoBehaviour
         if (enemyAI != null)
         {
             enemyAI.TakeDamage(damage);
+            Debug.Log($"Enemy took {damage} damage.");
         }
     }
 
@@ -142,5 +146,6 @@ public class WeaponController : MonoBehaviour
         yield return new WaitForSeconds(cooldown);
         CanAttack = true;
         IsAttacking = false;
+        Debug.Log("Attack cooldown reset.");
     }
 }
