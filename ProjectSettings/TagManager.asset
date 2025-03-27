@@ -6,6 +6,7 @@ TagManager:
   tags:
   - CinemachineTarget
   - Enemy
+  - HealthPickup
   layers:
   - Default
   - TransparentFX
