@@ -16,12 +16,20 @@ public class HealthManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (healthAmount <= 0)
+        {
+            Application.LoadLevel(Application.loadedLevel);
+        }
+
         if (Input.GetKeyDown(KeyCode.Return))
         {
             TakeDamage(20);
-        }  
+        }
 
-        if(Input)
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+            Heal(5);
+        }
     }
 
     public void TakeDamage(float damage)
