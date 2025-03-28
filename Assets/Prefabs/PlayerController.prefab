@@ -82,6 +82,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Sword: {fileID: 6857740742432680381}
   HitParticle: {fileID: 1000013355911406, guid: d32aa916f50cac94db11e6f19821a58f, type: 3}
+  AttackTrigger: {fileID: 6348315282669044763}
   CanAttack: 1
   AttackCooldown: 1
   ChargeAttackCooldown: 2
@@ -89,7 +90,6 @@ MonoBehaviour:
   SwordAttackSound: {fileID: 8300000, guid: fd7770db49810f24694df32b31dac010, type: 3}
   ChargedAttackSound: {fileID: 8300000, guid: a63da493c23148f43bb15c0032e153b0, type: 3}
   IsAttacking: 0
-  playerHealth: {fileID: 9143466537756658070}
   NormalAttackDamage: 10
   ChargedAttackDamage: 20
 --- !u!82 &7046690929493311559
@@ -334,6 +334,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3991866020620258027}
     m_Modifications:
+    - target: {fileID: 5393215578589016642, guid: c5efc39a8aaf6e64ea40e9ad573e9b47, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
     - target: {fileID: 5393215578589016655, guid: c5efc39a8aaf6e64ea40e9ad573e9b47, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -348,7 +352,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8616685848737228372, guid: c5efc39a8aaf6e64ea40e9ad573e9b47, type: 3}
       propertyPath: m_Layer
-      value: 7
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 8997996947095583982, guid: c5efc39a8aaf6e64ea40e9ad573e9b47, type: 3}
       propertyPath: m_RootOrder
@@ -400,7 +404,7 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 8616685848737228372, guid: c5efc39a8aaf6e64ea40e9ad573e9b47, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 9143466537756658070}
+      addedObject: {fileID: 125409956541196910}
   m_SourcePrefab: {fileID: 100100000, guid: c5efc39a8aaf6e64ea40e9ad573e9b47, type: 3}
 --- !u!4 &401991002063607796 stripped
 Transform:
@@ -417,7 +421,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 8616685848737228372, guid: c5efc39a8aaf6e64ea40e9ad573e9b47, type: 3}
   m_PrefabInstance: {fileID: 4392889502009149692}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &9143466537756658070
+--- !u!114 &125409956541196910
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -426,10 +430,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 5431960837412777640}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9973bfd0a3f784040b3af24465f90e57, type: 3}
+  m_Script: {fileID: 11500000, guid: 584b5d1bab66b0940995cf58a91fc613, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxHealth: 100
+  healthBar: {fileID: 0}
+  maxHealth: 100
 --- !u!1001 &4542214856796808999
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -618,9 +623,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 42c039932468d6f4883f994e6851bb8f, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6348315282669044763}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 42c039932468d6f4883f994e6851bb8f, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1237201964702689070}
   m_SourcePrefab: {fileID: 100100000, guid: 42c039932468d6f4883f994e6851bb8f, type: 3}
 --- !u!4 &6079936958981485319 stripped
 Transform:
@@ -675,27 +677,3 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0.27, z: 0.64}
---- !u!114 &1237201964702689070
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6857740742432680381}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 339bdfc902cf6c24d88fc8c3d3717cc7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Sword: {fileID: 919132149155446097, guid: 8e88c98d2d626cc4ea44d08262751840, type: 3}
-  HitParticle: {fileID: 0}
-  CanAttack: 1
-  AttackCooldown: 1
-  ChargeAttackCooldown: 2.5
-  ChargeTime: 2
-  SwordAttackSound: {fileID: 8300000, guid: fd7770db49810f24694df32b31dac010, type: 3}
-  ChargedAttackSound: {fileID: 8300000, guid: a63da493c23148f43bb15c0032e153b0, type: 3}
-  IsAttacking: 0
-  playerHealth: {fileID: 9143466537756658070}
-  NormalAttackDamage: 10
-  ChargedAttackDamage: 20

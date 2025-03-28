@@ -5,6 +5,7 @@ public class WeaponController : MonoBehaviour
 {
     public GameObject Sword;
     public GameObject HitParticle;
+    public Collider AttackTrigger; // Assignable trigger collider
     public bool CanAttack = true;
     public float AttackCooldown = 1.0f;
     public float ChargeAttackCooldown = 2.5f;
@@ -14,11 +15,18 @@ public class WeaponController : MonoBehaviour
     public bool IsAttacking = false;
     private bool isCharging = false;
     private float chargeTimer = 0f;
-    public PlayerHealth playerHealth;
 
     // Damage values
     public int NormalAttackDamage = 10;
     public int ChargedAttackDamage = 20;
+
+    void Start()
+    {
+        if (AttackTrigger == null)
+        {
+            Debug.LogError("AttackTrigger is not assigned in the Inspector!");
+        }
+    }
 
     void Update()
     {
@@ -43,6 +51,9 @@ public class WeaponController : MonoBehaviour
             anim.SetTrigger("Attack");
             GetComponent<AudioSource>().PlayOneShot(SwordAttackSound);
             Debug.Log("Normal Attack triggered.");
+
+            // Check for enemies within the assigned trigger collider
+            DetectEnemiesInTrigger();
         }
         else
         {
@@ -81,6 +92,9 @@ public class WeaponController : MonoBehaviour
             anim.SetTrigger("ChargeAttack");
             GetComponent<AudioSource>().PlayOneShot(ChargedAttackSound);
             Debug.Log("Charged Attack performed!");
+
+            // Check for enemies within the assigned trigger collider
+            DetectEnemiesInTrigger();
         }
         else
         {
@@ -100,43 +114,53 @@ public class WeaponController : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void DetectEnemiesInTrigger()
     {
-        if (other.CompareTag("Enemy") && IsAttacking)
+        if (AttackTrigger == null) return;
+
+        Collider[] hitColliders = Physics.OverlapBox(
+            AttackTrigger.bounds.center,
+            AttackTrigger.bounds.extents,
+            AttackTrigger.transform.rotation
+        );
+
+        foreach (var collider in hitColliders)
         {
-            Debug.Log("Enemy Hit! Spawning Blood Effect.");
-
-            Animator enemyAnim = other.GetComponent<Animator>();
-            if (enemyAnim != null)
+            if (collider.CompareTag("Enemy"))
             {
-                enemyAnim.SetTrigger("Hit");
-            }
-
-            int damage = isCharging ? ChargedAttackDamage : NormalAttackDamage;
-            ApplyDamageToEnemy(other, damage);
-
-            Vector3 spawnPosition = other.transform.position + Vector3.up * 1.5f;
-            GameObject particleInstance = Instantiate(HitParticle, spawnPosition, Quaternion.identity);
-
-            if (particleInstance != null)
-            {
-                ParticleSystem ps = particleInstance.GetComponent<ParticleSystem>();
-                if (ps != null)
+                Debug.Log("Enemy Hit! Spawning Blood Effect.");
+                Animator enemyAnim = collider.GetComponent<Animator>();
+                if (enemyAnim != null)
                 {
-                    ps.Play();
+                    enemyAnim.SetTrigger("Hit");
                 }
-            }
 
-            Destroy(particleInstance, 2.0f);
+                int damage = isCharging ? ChargedAttackDamage : NormalAttackDamage;
+                ApplyDamageToEnemy(collider, damage);
+
+                Vector3 spawnPosition = collider.transform.position + Vector3.up * 1.5f;
+                GameObject particleInstance = Instantiate(HitParticle, spawnPosition, Quaternion.identity);
+
+                if (particleInstance != null)
+                {
+                    ParticleSystem ps = particleInstance.GetComponent<ParticleSystem>();
+                    if (ps != null)
+                    {
+                        ps.Play();
+                    }
+                }
+
+                Destroy(particleInstance, 2.0f);
+            }
         }
     }
 
     public void ApplyDamageToEnemy(Collider enemyCollider, int damage)
     {
-        EnemyAI enemyAI = enemyCollider.GetComponent<EnemyAI>();
+        EnemyHealth enemyAI = enemyCollider.GetComponent<EnemyHealth>();
         if (enemyAI != null)
         {
-            enemyAI.TakeDamage(damage);
+            enemyAI.EnemyTakeDamage(damage);
             Debug.Log($"Enemy took {damage} damage.");
         }
     }
