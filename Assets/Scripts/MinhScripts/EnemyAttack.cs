@@ -2,17 +2,16 @@ using UnityEngine;
 
 public class EnemyAttack : MonoBehaviour
 {
-    public float damageAmount = 20f; // Amount to restore
+    public float damageAmount = 20f;
 
-    private void OnTriggerEnter(Collider other)
+    public void Attack(GameObject target)
     {
-        if (other.CompareTag("Player")) // Ensure it's the player
+        if (target.CompareTag("Player"))
         {
-            HealthManager healthManager = other.GetComponent<HealthManager>(); // Get HealthManager from the player
+            HealthManager healthManager = target.GetComponent<HealthManager>();
             if (healthManager != null)
             {
-                healthManager.TakeDamage(damageAmount); // Damage the player (negative damage)
-                Destroy(gameObject); // Destroy the pickup
+                healthManager.TakeDamage(damageAmount);
             }
         }
     }

@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -10,6 +9,10 @@ public class AiWorker : MonoBehaviour
     private int currentPointIndex = 0;
     private Transform player;
     private bool chasingPlayer = false;
+    private bool isAttacking = false;
+    public float attackRange = 2f;
+    public float attackCooldown = 2f;
+    private EnemyAttack enemyAttack;
 
     void Start()
     {
@@ -17,13 +20,23 @@ public class AiWorker : MonoBehaviour
         {
             agent.SetDestination(patrolPoints[currentPointIndex].position);
         }
+        enemyAttack = GetComponent<EnemyAttack>(); // Ensure the attack script is attached
     }
 
     void Update()
     {
         if (chasingPlayer && player != null)
         {
-            agent.SetDestination(player.position);
+            float distanceToPlayer = Vector3.Distance(transform.position, player.position);
+
+            if (distanceToPlayer <= attackRange && !isAttacking)
+            {
+                StartCoroutine(AttackPlayer());
+            }
+            else
+            {
+                agent.SetDestination(player.position);
+            }
         }
         else if (!agent.pathPending && agent.remainingDistance < 0.5f)
         {
@@ -56,5 +69,21 @@ public class AiWorker : MonoBehaviour
             player = null;
             MoveToNextPoint();
         }
+    }
+
+    IEnumerator AttackPlayer()
+    {
+        isAttacking = true;
+        agent.isStopped = true; // Stop moving to attack
+
+        if (enemyAttack != null)
+        {
+            enemyAttack.Attack(player.gameObject); // Calls the attack function
+        }
+
+        yield return new WaitForSeconds(attackCooldown); // Wait before attacking again
+
+        agent.isStopped = false;
+        isAttacking = false;
     }
 }
