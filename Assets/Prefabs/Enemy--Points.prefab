@@ -314,6 +314,7 @@ GameObject:
   - component: {fileID: 6298687456971743680}
   - component: {fileID: 2311640292225760439}
   - component: {fileID: 4511262832126088150}
+  - component: {fileID: 111404995755848544}
   m_Layer: 0
   m_Name: AIWorker
   m_TagString: Enemy
@@ -489,6 +490,21 @@ MonoBehaviour:
   - {fileID: 4922227956123069035}
   - {fileID: 1445969505241745473}
   - {fileID: 5195928819992839609}
+  attackRange: 2
+  attackCooldown: 2
+--- !u!114 &111404995755848544
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4265175256785733688}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec52105af8756f74fbe36999dd60836d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damageAmount: 20
 --- !u!1 &7070635047226611257
 GameObject:
   m_ObjectHideFlags: 0
