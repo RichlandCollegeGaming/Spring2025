@@ -9233,7 +9233,7 @@ GameObject:
   - component: {fileID: 1041419091}
   - component: {fileID: 1041419090}
   m_Layer: 0
-  m_Name: Cube (1)
+  m_Name: Watercooler Placeholder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12218,7 +12218,7 @@ GameObject:
   - component: {fileID: 1341598393}
   - component: {fileID: 1341598392}
   m_Layer: 0
-  m_Name: Cube (3)
+  m_Name: Filing Cabinet Placeholder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -15489,7 +15489,7 @@ GameObject:
   - component: {fileID: 1607514997}
   - component: {fileID: 1607514996}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: Printer Placeholder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -17896,7 +17896,7 @@ GameObject:
   - component: {fileID: 1844276847}
   - component: {fileID: 1844276846}
   m_Layer: 0
-  m_Name: Cube (2)
+  m_Name: Exit Sign Placeholder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
