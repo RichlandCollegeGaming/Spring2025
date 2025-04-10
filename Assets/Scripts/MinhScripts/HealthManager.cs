@@ -7,6 +7,7 @@ public class HealthManager : MonoBehaviour
     public Image healthBar;
     public float maxHealth = 100f; // Maximum health value
     private float healthAmount; // Current health
+    public gameoverscreen gameoverscreen;
 
     void Start()
     {
@@ -14,11 +15,13 @@ public class HealthManager : MonoBehaviour
         UpdateHealthUI();
     }
 
+    private bool isDead = false;
     void Update()
     {
-        if (healthAmount <= 0)
+        if (healthAmount <= 0 && !isDead)
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); // Reload scene on death
+            isDead = true;
+            gameoverscreen.Setup();
         }
 
         if (Input.GetKeyDown(KeyCode.Return))
