@@ -7,7 +7,6 @@ TagManager:
   - CinemachineTarget
   - Enemy
   - HealthPickup
-  - canPickup
   layers:
   - Default
   - TransparentFX
@@ -18,7 +17,7 @@ TagManager:
   - Hittable
   - Player
   - Obstacles
-  - holdLayer
+  - WeaponLayer
   - 
   - 
   - 
