@@ -8,6 +8,18 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/SampleScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 1
+    path: Assets/Scenes/Garrett.unity
+    guid: e2bfb7f02254f1446869ee0ef9363c02
+  - enabled: 1
+    path: Assets/Scenes/Josue/Level1.unity
+    guid: 75f9500fd05beb046a4634be3a7302c6
+  - enabled: 1
+    path: Assets/Scenes/Therone & Gabriel/Level 2.unity
+    guid: 597be324ece9d8248abf9382d7711683
+  - enabled: 1
+    path: Assets/Scenes/Josue/Level3.unity
+    guid: 8f80640ad06400747a53f9281c939df3
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
