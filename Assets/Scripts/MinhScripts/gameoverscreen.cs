@@ -45,6 +45,12 @@ public class gameoverscreen : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); // Reload current scene
     }
 
+    public void LoadMainMenu()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene("MainMenu");
+    }
+
     public void QuitGame()
     {
         UnityEditor.EditorApplication.isPlaying = false;
