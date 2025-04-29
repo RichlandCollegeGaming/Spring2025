@@ -172,5 +172,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotationX: 0
-  rotationY: 1
+  rotationY: 200
   rotationZ: 0
