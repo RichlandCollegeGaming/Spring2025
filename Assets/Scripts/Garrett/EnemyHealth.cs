@@ -8,52 +8,69 @@ public class EnemyHealth : MonoBehaviour
     public Image healthBar;
     public float maxHealthEnemy = 100f;
     private float healthAmount;
-
-    private Animator animator; // Reference to the Animator
-    private bool isDead = false; // Prevent multiple death triggers
+    private Animator animator;
+    private bool isDead = false;
+    public AudioSource audioSource;
+    public AudioClip[] hitSounds;
+    public AudioClip[] deathSounds;
 
     void Start()
     {
         healthAmount = maxHealthEnemy;
-        animator = GetComponentInChildren<Animator>(); // Finds Animator on child object
         UpdateEnemyHealthUI();
+        animator = GetComponentInChildren<Animator>();
     }
 
-
-
-   void Update()
-{
-    if (!isDead && healthAmount <= 0)
+    void Update()
     {
-        isDead = true;
-        animator.SetTrigger("Die"); // Trigger death animation
-        GetComponent<NavMeshAgent>().enabled = false; // Disable movement
-        GetComponent<Collider>().enabled = false; // Disable collider
-        
-        // Ensure animation plays fully before disabling the Animator
-        StartCoroutine(WaitAndDestroy());
+        if (!isDead && healthAmount <= 0)
+        {
+            isDead = true;
+            animator.SetTrigger("Die"); // Trigger the death animation
+            GetComponent<NavMeshAgent>().enabled = false; // Stop movement
+            GetComponent<Collider>().enabled = false; // Disable the collider
+            PlayDeathSound();
+            // Start coroutine to wait for the death animation to finish
+            StartCoroutine(WaitAndDestroy());
+        }
     }
-}
 
-IEnumerator WaitAndDestroy()
-{
-    // Wait for the death animation to finish before destroying the object
-    yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
-    animator.enabled = false; // Disable the Animator to prevent any further animation updates
-    Destroy(gameObject); // Destroy the enemy after the animation
-}
-
+    IEnumerator WaitAndDestroy()
+    {
+        // Wait for the death animation to finish before destroying the object
+        yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
+        animator.enabled = false; // Disable the Animator
+        Destroy(gameObject); // Destroy the enemy after the animation is done
+    }
 
     public void EnemyTakeDamage(float damage)
     {
-        if (isDead) return;
-
         healthAmount -= damage;
         healthAmount = Mathf.Clamp(healthAmount, 0, maxHealthEnemy);
         UpdateEnemyHealthUI();
+
+        PlayHitSound(); // Play sound when hit
     }
 
-    private void UpdateEnemyHealthUI()
+    void PlayHitSound()
+    {
+        if (audioSource != null && hitSounds.Length > 0)
+        {
+            int index = Random.Range(0, hitSounds.Length);
+            audioSource.PlayOneShot(hitSounds[index]);
+        }
+    }
+
+    void PlayDeathSound()
+    {
+        if (audioSource != null && deathSounds.Length > 0)
+        {
+            int index = Random.Range(0, deathSounds.Length);
+            audioSource.PlayOneShot(deathSounds[index]);
+        }
+    }
+
+    void UpdateEnemyHealthUI()
     {
         if (healthBar != null)
         {

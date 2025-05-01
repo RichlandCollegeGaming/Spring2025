@@ -13,6 +13,7 @@ public class AiWorker : MonoBehaviour
     public float attackRange = 2f;
     public float attackCooldown = 2f;
     private EnemyAttack enemyAttack;
+    private Animator animator;
 
     void Start()
     {
@@ -20,7 +21,9 @@ public class AiWorker : MonoBehaviour
         {
             agent.SetDestination(patrolPoints[currentPointIndex].position);
         }
-        enemyAttack = GetComponent<EnemyAttack>(); // Ensure the attack script is attached
+
+        enemyAttack = GetComponent<EnemyAttack>();
+        animator = GetComponentInChildren<Animator>(); // Make sure this targets the mesh
     }
 
     void Update()
@@ -35,7 +38,8 @@ public class AiWorker : MonoBehaviour
             }
             else
             {
-                agent.SetDestination(player.position);
+                if (agent.isOnNavMesh)
+                    agent.SetDestination(player.position);
             }
         }
         else if (!agent.pathPending && agent.remainingDistance < 0.5f)
@@ -49,7 +53,8 @@ public class AiWorker : MonoBehaviour
         if (patrolPoints.Length == 0) return;
 
         currentPointIndex = (currentPointIndex + 1) % patrolPoints.Length;
-        agent.SetDestination(patrolPoints[currentPointIndex].position);
+        if (agent.isOnNavMesh)
+            agent.SetDestination(patrolPoints[currentPointIndex].position);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -74,14 +79,23 @@ public class AiWorker : MonoBehaviour
     IEnumerator AttackPlayer()
     {
         isAttacking = true;
-        agent.isStopped = true; // Stop moving to attack
+        agent.isStopped = true;
 
-        if (enemyAttack != null)
+        // Play punch animation
+        if (animator != null)
         {
-            enemyAttack.Attack(player.gameObject); // Calls the attack function
+            animator.SetTrigger("Punch");
         }
 
-        yield return new WaitForSeconds(attackCooldown); // Wait before attacking again
+        //wait slightly so the animation has time to hit before damage
+        yield return new WaitForSeconds(1f);
+
+        if (enemyAttack != null && player != null)
+        {
+            enemyAttack.Attack(player.gameObject);
+        }
+
+        yield return new WaitForSeconds(attackCooldown);
 
         agent.isStopped = false;
         isAttacking = false;

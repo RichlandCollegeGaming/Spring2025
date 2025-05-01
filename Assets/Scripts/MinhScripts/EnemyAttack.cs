@@ -3,6 +3,7 @@ using UnityEngine;
 public class EnemyAttack : MonoBehaviour
 {
     public float damageAmount = 20f;
+    private Animator animator;
 
     public void Attack(GameObject target)
     {
