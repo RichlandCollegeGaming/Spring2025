@@ -50,6 +50,8 @@ public class EnemyHealth : MonoBehaviour
         UpdateEnemyHealthUI();
 
         PlayHitSound(); // Play sound when hit
+        animator.ResetTrigger("Get Hit");
+        animator.SetTrigger("Get Hit");
     }
 
     void PlayHitSound()
