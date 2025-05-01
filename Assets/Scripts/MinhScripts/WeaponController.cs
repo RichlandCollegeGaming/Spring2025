@@ -138,7 +138,7 @@ public class WeaponController : MonoBehaviour
                 int damage = isCharging ? ChargedAttackDamage : NormalAttackDamage;
                 ApplyDamageToEnemy(collider, damage);
 
-                Vector3 spawnPosition = collider.transform.position + Vector3.up * 1.5f;
+                Vector3 spawnPosition = collider.transform.position;
                 GameObject particleInstance = Instantiate(HitParticle, spawnPosition, Quaternion.identity);
 
                 if (particleInstance != null)
