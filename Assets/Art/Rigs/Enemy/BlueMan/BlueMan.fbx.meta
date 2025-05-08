@@ -3,7 +3,12 @@ guid: 3b1e65c5553763544b9986e6e90d76fc
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ManBlue_0_palette1
+    second: {fileID: 2100000, guid: ff0a80ead614bfa4f967e15ce1921ec9, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
