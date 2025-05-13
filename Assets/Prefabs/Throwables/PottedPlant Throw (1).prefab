@@ -185,7 +185,7 @@ MonoBehaviour:
   throwForce: 600
   maxDistance: 3
   hitParticlePrefab: {fileID: 4268155283535242465, guid: d2eb0b0734c98b749bca564aaa31a8a2, type: 3}
-  damageAmount: 20
+  damageAmount: 30
 --- !u!1 &5950134227807680574
 GameObject:
   m_ObjectHideFlags: 0

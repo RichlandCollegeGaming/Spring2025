@@ -23,16 +23,6 @@ public class HealthManager : MonoBehaviour
             isDead = true;
             gameoverscreen.Setup();
         }
-
-        if (Input.GetKeyDown(KeyCode.Return))
-        {
-            TakeDamage(20);
-        }
-
-        if (Input.GetKeyDown(KeyCode.Space)) // Changed heal key to Space
-        {
-            Heal(5);
-        }
     }
 
     public void TakeDamage(float damage)

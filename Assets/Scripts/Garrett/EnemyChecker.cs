@@ -1,67 +1,60 @@
 using System.Collections;
 using UnityEngine;
+using Cinemachine;
 
 public class EnemyChecker : MonoBehaviour
 {
-    public GameObject[] objectsToToggle;         // Objects to turn on/off
-    public float displayDuration = 5f;           // How long everything stays on
-    public float respawnExtraTime = 5f;          // Extra time to keep respawnObject off
-    public GameObject animationObject;           // Object with animation trigger
-    public string animationTrigger = "Play";     // Animator trigger name
-    public GameObject respawnObject;             // Respawn object to control separately
+    [Header("Set References")]
+    public GameObject targetObject;          // The object to turn off/on
+    public GameObject virtualCameraObject;   // The Cinemachine Virtual Camera GameObject
+    public Animator animator;                // Animator to play the trigger animation
+    public string triggerName;               // The trigger parameter to activate the animation
 
-    private bool eventTriggered = false;
+    [Header("Timing Settings")]
+    public float delayBeforeAnimation = 1f;
+    public float delayAfterAnimation = 1f;
+
+    private bool hasTriggered = false;
 
     void Update()
     {
-        int enemyCount = GameObject.FindGameObjectsWithTag("Enemy").Length;
-
-        if (enemyCount <= 0 && !eventTriggered)
+        if (!hasTriggered && GameObject.FindGameObjectsWithTag("Enemy").Length <= 0)
         {
-            eventTriggered = true;
-            StartCoroutine(HandleVictorySequence());
+            hasTriggered = true;
+            StartCoroutine(PlaySequence());
         }
     }
 
-    IEnumerator HandleVictorySequence()
+    private IEnumerator PlaySequence()
     {
-        // 1. Turn on all objects, including respawn
-        foreach (GameObject obj in objectsToToggle)
-        {
-            obj.SetActive(true);
-        }
+        // Turn on virtual camera and turn off the target object
+        virtualCameraObject.SetActive(true);
+        targetObject.SetActive(false);
 
-        if (respawnObject != null)
-        {
-            respawnObject.SetActive(true);
-        }
+        // Wait before starting animation
+        yield return new WaitForSeconds(delayBeforeAnimation);
 
-        // 2. Play animation
-        if (animationObject != null)
-        {
-            Animator anim = animationObject.GetComponent<Animator>();
-            if (anim != null)
-            {
-                anim.SetTrigger(animationTrigger);
-            }
-        }
+        // Set the trigger to start the animation
+        animator.SetTrigger(triggerName);
 
-        // 3. Wait for display duration
-        yield return new WaitForSeconds(displayDuration);
+        // Wait until the Animator enters any state after trigger
+        yield return new WaitUntil(() =>
+            animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0f
+        );
 
-        // 4. Turn off everything at the same time
-        foreach (GameObject obj in objectsToToggle)
-        {
-            obj.SetActive(false);
-        }
+        // Wait for the animation to finish
+        yield return new WaitUntil(() =>
+            animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f &&
+            !animator.IsInTransition(0)
+        );
 
-        if (respawnObject != null)
-        {
-            respawnObject.SetActive(false);
+        // Turn off virtual camera
+        virtualCameraObject.SetActive(false);
 
-            // 5. Wait extra time, then turn it back on
-            yield return new WaitForSeconds(respawnExtraTime);
-            respawnObject.SetActive(true);
-        }
+        // Wait again
+        yield return new WaitForSeconds(delayAfterAnimation);
+
+        // Re-enable the target object
+        targetObject.SetActive(true);
     }
 }

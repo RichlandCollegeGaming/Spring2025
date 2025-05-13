@@ -226,14 +226,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13db57670d65f7e42bee2b7fd2ca93b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectsToToggle:
-  - {fileID: 1170693795690434072}
-  - {fileID: 0}
-  displayDuration: 1
-  respawnExtraTime: -5
-  animationObject: {fileID: 8826551489342229867}
-  animationTrigger: Play
-  respawnObject: {fileID: 0}
+  targetObject: {fileID: 0}
+  virtualCameraObject: {fileID: 1170693795690434072}
+  animator: {fileID: 6271153149845641230}
+  triggerName: Play
+  delayBeforeAnimation: 5
+  delayAfterAnimation: 5
 --- !u!1 &5058213275072244107
 GameObject:
   m_ObjectHideFlags: 0
@@ -395,7 +393,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 0fd6c115691bd1a419e6ca0b7310d5df, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.32825
+      value: -0.32825
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0fd6c115691bd1a419e6ca0b7310d5df, type: 3}
       propertyPath: m_LocalScale.y
